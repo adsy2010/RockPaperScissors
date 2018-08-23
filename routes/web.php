@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/match/list',       'MatchController@listMatches')->name('matches.list');
+Route::get('/match/view/{mid}', 'MatchController@viewMatch')->name('matches.view');
 Route::get('/match/create',     'MatchController@createMatch')->name('matches.create');
 Route::post('/match/create',    'MatchController@createMatch')->name('matches.postCreate');
 Route::get('/match/join/{mid}', 'MatchController@joinMatch')->name('matches.join');

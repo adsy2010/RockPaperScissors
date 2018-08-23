@@ -17,7 +17,18 @@ class Match extends Model
 
     protected $fillable = [
         'matchId',
+        'creatorId',
         'players',
         'games'
     ];
+
+    public function matchPlayers()
+    {
+        return $this->hasMany('App\MatchPlayers', 'matchId', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->hasOne('App\User', 'id', 'creatorId');
+    }
 }

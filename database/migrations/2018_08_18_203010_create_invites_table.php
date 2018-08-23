@@ -17,6 +17,7 @@ class CreateInvitesTable extends Migration
             $table->increments('id');
             $table->integer('playerId');
             $table->string('matchId', 32);
+            $table->integer('state');
             $table->timestamps();
         });
     }

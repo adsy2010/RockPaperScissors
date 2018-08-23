@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Matches you are part of</div>
+                    <div class="panel-heading"><h4>Match {{ $match->matchId }}</h4></div>
 
                     <div class="panel-body">
                         @if (session('status'))
@@ -13,27 +13,29 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        Not part of a game?
+
+                        Match created at: {{ $match->created_at }}<br>
+                        Maximum Players: {{ $match->players }}<br>
+                        Games Per Match: {{ $match->games }}<br>
+
+                            @if(Auth::id() == $match->creator->id && count($match->matchPlayers) > 1)
+                                <a class="btn btn-primary" href="">Start Game</a>
+                                @else
+                                <a class="btn btn-danger" disabled="" title="There are not enough players to start the game or you are not the match creator">Start Game</a>
+                            @endif
                             <hr>
 
-                            <a class="btn btn-success" href="{{ Route('matches.create') }}">Create Game</a>
-                            <a class="btn btn-info" href="{{ Route('matches.invites') }}">Check Invites</a>
-                            <hr>
-                        <table class="table table-striped">
-                            <tr>
-                                <th>Match ID</th>
-                                <th>Max Players</th>
-                                <th>Games</th>
-                            </tr>
 
-                        @foreach($matches as $match)
-                                <tr>
-                                    <td><a href="{{ Route('matches.join', ['mid' => $match->match->matchId]) }}">{{ $match->match->matchId }}</a></td>
-                                    <td>{{ $match->match->players }}</td>
-                                    <td>{{ $match->match->games }}</td>
-                                </tr>
-                        @endforeach
-                        </table>
+                            <table class="table table-striped">
+                                <tr><th>Players in match</th></tr>
+                                @foreach($match->matchPlayers as $player)
+                                    <tr><td>{{ $player->player->name }}</td></tr>
+                                @endforeach
+                                <tr><td><strong>Total Players</strong>: {{ count($match->matchPlayers) }}</td></tr>
+
+                            </table>
+
+
                     </div>
                 </div>
             </div>

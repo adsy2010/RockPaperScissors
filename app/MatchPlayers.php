@@ -24,4 +24,9 @@ class MatchPlayers extends Model
     {
         return $this->hasOne('App\Match', 'id', 'matchId');
     }
+
+    public function player()
+    {
+        return $this->hasOne('App\User', 'id', 'playerId');
+    }
 }

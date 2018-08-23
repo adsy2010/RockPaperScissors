@@ -37,6 +37,7 @@ class MatchController extends Controller
         $match->matchId = $matchId;
         $match->players = $players;
         $match->games = $games;
+        $match->creatorId = Auth::id();
         $match->save();
 
         //join created match as first player
@@ -111,10 +112,16 @@ class MatchController extends Controller
         return true;
     }
 
+    public function viewMatch($matchId)
+    {
+        $match = Match::where('matchId', $matchId)->firstOrFail();
+        return view('match.view', ['match' => $match]);
+    }
+
     public function listMatches()
     {
         $matches = MatchPlayers::where('playerId', '=', Auth::id())
             ->paginate(25);
-        return view('match.view', ['matches' => $matches]);
+        return view('match.list', ['matches' => $matches]);
     }
 }

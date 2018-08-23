@@ -43,7 +43,7 @@ class MatchController extends Controller
         //join created match as first player
         $this->joinMatch($request, $match->id);
 
-        return redirect()->to('matches.list')->with('status', 'Created Match '.$matchId);
+        return redirect()->route('matches.list')->with('status', 'Created Match '.$matchId);
     }
 
     public function joinMatch(Request $request, $matchId = null)
@@ -56,22 +56,26 @@ class MatchController extends Controller
 
                 $matchId = $request['mid'];
                 $match = Match::where('matchId', '=', $matchId)->firstOrFail();
+
             }
             else
                 return redirect('matches.list')
                     ->with('status', 'No valid match id provided to join')
                     ->send();
+
         }
         else
         {
-            $match = Match::where('matchId', '=', $matchId)->firstOrFail();
+
+            if(strlen($matchId) < 32) $match = Match::find($matchId);
+            else $match = Match::where('matchId', '=', $matchId)->firstOrFail();
         }
 
         $player = $this->isPlayerInMatch($match->id);
         $max = $this->isMatchMaxPlayers($match->players, $match->id);
 
-        if($player) return redirect()->to(Route('matches.list'))->with('status', "Failed to join, you are already in this match '.$matchId.'.")->send();
-        if($max) return redirect()->to(Route('matches.list'))->with('status', 'Failed, there are already enough players in this match.')->send();
+        if($player) return redirect()->route('matches.list')->with('status', "Failed to join, you are already in this match '.$matchId.'.")->send();
+        if($max) return redirect()->route('matches.list')->with('status', 'Failed, there are already enough players in this match.')->send();
 
         if(!$max && !$player) {
             $matchPlayer = new MatchPlayers();
@@ -120,8 +124,10 @@ class MatchController extends Controller
 
     public function listMatches()
     {
-        $matches = MatchPlayers::where('playerId', '=', Auth::id())
+
+        $matches = MatchPlayers::where('playerId', Auth::id())
             ->paginate(25);
+
         return view('match.list', ['matches' => $matches]);
     }
 }

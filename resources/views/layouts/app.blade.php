@@ -36,7 +36,9 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        @auth
+                        &nbsp;<li><a href="{{ Route('matches.list') }}">Match List</a></li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

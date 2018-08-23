@@ -70,6 +70,25 @@ class GameController extends Controller
             )->get();
     }
 
+    /**
+     * Determine which move wins
+     *
+     * @param $moveA string Move A (Rock, Paper or Scissors)
+     * @param $moveB string Move B (Rock, Paper or Scissors)
+     * @return int 0 for equal, 1 for moveA, 2 for moveB, -1 for fail
+     */
+    private function whoWins($moveA, $moveB)
+    {
+        if($moveA == $moveB) return 0;
+        if($moveA == 'Paper' 	&& $moveB == 'Scissors') 	return 2;
+        if($moveA == 'Paper' 	&& $moveB == 'Rock') 		return 1;
+        if($moveA == 'Rock' 	&& $moveB == 'Scissors') 	return 1;
+        if($moveA == 'Rock' 	&& $moveB == 'Paper') 		return 2;
+        if($moveA == 'Scissors' && $moveB == 'Rock') 		return 2;
+        if($moveA == 'Scissors' && $moveB == 'Paper') 		return 1;
+        return -1;
+    }
+
     public function determineMatchResult($matchId)
     {
         $scores = array();

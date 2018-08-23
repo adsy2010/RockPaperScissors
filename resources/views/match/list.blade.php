@@ -14,11 +14,11 @@
                             </div>
                         @endif
                         Not part of a game?
-                            <hr>
+                        <hr>
 
-                            <a class="btn btn-success" href="{{ Route('matches.create') }}">Create Game</a>
-                            <a class="btn btn-info" href="{{ Route('matches.invites') }}">Check Invites</a>
-                            <hr>
+                        <a class="btn btn-success" href="{{ Route('matches.create') }}">Create Game</a>
+                        <a class="btn btn-info" href="{{ Route('matches.invites') }}">Check Invites</a>
+                        <hr>
                         <table class="table table-striped">
                             <tr>
                                 <th>Match ID</th>
@@ -27,14 +27,16 @@
                                 <th></th>
                             </tr>
 
-                        @foreach($matches as $match)
+                            @forelse($matches as $match)
                                 <tr>
-                                    <td><a href="{{ Route('matches.view', ['mid' => $match->match->matchId]) }}">{{ $match->match->matchId }}</a></td>
+                                    <td><a href="{{Route('matches.view', ['mid' => $match->match->matchId]) }} ">{{ $match->match->matchId }}</a></td>
                                     <td>{{ $match->match->players }}</td>
                                     <td>{{ $match->match->games }}</td>
                                     <td><a class="btn btn-primary" href="{{ Route('matches.join', ['mid' => $match->match->matchId]) }}">Join Match</a></td>
                                 </tr>
-                        @endforeach
+                                @empty
+                                Nothing
+                            @endforelse
                         </table>
                     </div>
                 </div>
